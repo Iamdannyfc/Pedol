@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}
+{{user.username}}
+{% endblock %}
+{% block content %}
+
+<!-- This is where profile introductions happens -->
+{% for i in current_user.new_mentions() %}
+{{i.text}} <br>
+{% endfor %}
+
+<div class="trending" style="margin-top: 0rem;">
+    <h1 style="margin-bottom: 0rem;">
+        <center> {{ user.username }}'s profile</center>
+    </h1>
+    {% if current_user.is_anonymous %}
+    {% else %}
+    <center>
+        <small>
+            {% if current_user.id == user.id %}
+            <a href="{{url_for('auth.follow', userid=user.id)}}" class="btn btn-danger"
+                style="padding-top: 0rem;padding-bottom: 0rem;">
+                Edit profile </a>
+
+            {% else %}
+            <a href="{{url_for('auth.follow', userid=user.id)}}" class="btn btn-primary"
+                style="padding-top: 0rem;padding-bottom: 0rem;">
+                {% if current_user.is_following(user) %}
+                Unfollow {% else %} Follow {% endif %} {{user.username}} </a>
+            {% endif %}
+        </small>
+    </center>
+    {% endif %}
+    <br />
+    <center>
+        <table class="trendingtopic">
+            <tr>
+                <td><a href="{{url_for('views.all')}}"><small>Topics ({{user.posts|count}})</small></a></td>
+                <td> <a href=""><small> Comments ({{user.Comment|count + user.posts|count}})</small></a></td>
+                <td> <a href="#followers"><small>Followers
+                            ({{user.followers|map(attribute='username')|list|count}})</small></a></td>
+            </tr>
+        </table>
+    </center>
+</div>
+<!-- All this user posts is shown here -->
+<div class="trending">
+    {% for post in posts %}
+    <div class="card-body" style="padding: 0.2rem 1rem;">
+        <h5 style="margin-bottom: 0rem;"><a href="/{{post.id}}/{{post.slug}}"> {{post.topic}}</a></h5>
+        <small>
+            {{post.postcategory.name}} by {{post.user.username}} on
+            {{post.date_to_publish.strftime("%I:%M %p , %b %d,%Y")}}
+        </small>
+    </div>
+    <hr>
+    {% endfor %}
+</div>
+<br>
+<!-- All other funtions like Followers goes here -->
+<div class="trending" style="margin-top: 0rem;"><a id="followers"></a>
+    <center><b>Followers:</b></center>
+    <span style="padding-left: 1rem;">
+        {% for following in user.followers %}
+        <a href="{{url_for('views.menu',data=following.username)}}">
+            {{following.username}}
+        </a>
+        {% if loop.length < 1 or (loop.index==loop.length) %} {% else %},{% endif %} </span>
+            {% endfor %}
+            <br>
+</div>
+
+{% endblock content %}

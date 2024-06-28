@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+
+
+{% block title %} {{title}} {% endblock %}
+
+
+
+
+
+{% block content %}
+<center>
+    <b>Topics You Are Following</b>
+</center>
+
+<div>
+    <!-- Loop through the number of pages to display a link for each-->
+
+    {% for page_num in followed_topic.iter_pages(left_edge=7, right_edge=4, left_current=2, right_current=2) %}
+    {% if page_num %}
+    <!-- Check for the active page and set the link to "Active"-->
+    {% if followed_topic.page == page_num %}
+    <a href="{{ url_for('views.following', page_v=page_num) }}" class="btn btn-dark btn-sm">
+        {{ page_num }}
+    </a>
+    {% else %}
+    <a href="{{ url_for('views.following', page_v=page_num) }}" class="btn btn-outline-dark btn-sm">
+        {{ page_num }}
+    </a>
+    {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+    {% endfor %}
+</div>
+
+
+<!-- All this user posts is shown here -->
+<div class="trending">
+    {% for post in current_user.followed_posts() %}
+    <div class="card-body" style="padding: 0.2rem 1rem;">
+        <h5 style="margin-bottom: 0rem;"><a href="/{{post.id}}/{{post.slug}}"> {{post.topic}}</a>
+            {% if (current_user.new_ft_comment_id(post.id)) and (not current_user.has_viewed_ft_notif(post.id)) and
+            (current_user.viewed(post.id).views_created) %}
+            <a href="{{url_for('views.post',data=post.id,slug=post.slug,page=current_user.viewed(post.id).page_num)}}#{{current_user.viewed(post.id).id}}"
+                class="badge bg-danger rounded-pill" style="color: white;">New </a>
+        </h5>
+        {% endif %}
+        <small>
+            {{post.postcategory.name}} by {{post.user.username}} on
+            {{post.date_to_publish.strftime("%I:%M %p , %b %d,%Y")}}
+        </small>
+    </div>
+    {% if loop.index==loop.length %}
+    {% else %}
+    <hr>
+    {% endif %}
+    {% endfor %}
+</div>
+<!-- Loop through the number of pages to display a link for each-->
+<br>
+{% for page_num in followed_topic.iter_pages(left_edge=7, right_edge=4, left_current=2, right_current=2) %}
+{% if page_num %}
+<!-- Check for the active page and set the link to "Active"-->
+{% if followed_topic.page == page_num %}
+<a href="{{ url_for('views.following', page_v=page_num) }}" class="btn btn-dark btn-sm">
+    {{ page_num }}
+</a>
+{% else %}
+<a href="{{ url_for('views.following', page_v=page_num) }}" class="btn btn-outline-dark btn-sm">
+    {{ page_num }}
+</a>
+{% endif %}
+{% else %}
+...
+{% endif %}
+{% endfor %}
+
+
+{% endblock %}

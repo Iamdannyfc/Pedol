@@ -1,0 +1,56 @@
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-success">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{url_for('views.home')}}">{{SITENAME}}</a> 
+      <span class="fluid-center navbar-brand">
+        {% if post %}
+          {{post.postcategory.name}}
+        {% elif brand %}
+          {{brand}}
+        {% else %}  
+         
+        {% endif %}
+      </span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0 mx-0">
+          {% if current_user.is_anonymous %}
+            <li class="nav-item mx-0">
+                <a class="nav-link" href="{{url_for('auth.login')}}">Login</a>
+            </li>
+            <li class="nav-item mx-0">
+                <a class="nav-link" href="{{url_for('auth.register')}}">Register</a>
+            </li>
+          {% else%}
+              <li class="nav-item mx-0">
+                <a class="nav-link user" href="/{{current_user.username}}">{{current_user.username}}</a>
+              </li><li class="nav-item mx-0">
+                <a class="nav-link" href="{{url_for('auth.logout')}}">Logout</a>
+              </li>
+
+
+              
+
+          {% endif %}
+
+
+
+
+         
+        </ul>
+        <form class="d-flex">
+          <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button style="background-color: rgb(191, 255, 220);" class ="btn" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  
+
+
+
+
+</header>

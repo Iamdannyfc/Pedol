@@ -1,0 +1,308 @@
+<section>
+      <a id="top"></a>
+      <article>
+            <div class="card">
+                  <center>
+                        <b>{{post.topic}} </b>({{post.total_views}} views)
+                  </center>
+                  <!-- This show the follow link for logged user -->
+                  <center>(<a href="{{url_for('views.createcomment',id=post.id)}}">Reply</a>)
+                        {% if current_user.is_anonymous %}
+                        {% else %}
+                        (<a href="{{url_for('auth.followpost',postid=post.id)}}"> {% if post.id in
+                              current_user.followed_posts()|map(attribute='id')|list %}
+                              Unfollow
+                              {% else %}Follow
+                              {% endif %}</a>)
+                        {% endif %}(<a href="#bottom">Go down</a>)</center>
+
+                  <!-- Loop through the number of pages to display a link for each-->
+                  <span style="margin-left: 1rem;margin-bottom: 0.5rem;">
+                        {% for page_num in comments.iter_pages(left_edge=7, right_edge=4, left_current=2,
+                        right_current=2) %}
+                        {% if page_num %}
+                        <!-- Check for the active page and set the link to "Active"-->
+                        {% if comments.page == page_num %}
+                        <a href="{{ url_for('views.post',data=post.id,slug=post.slug,page=page_num) }}"
+                              class="btn btn-dark btn-sm">
+                              {{ page_num }}
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('views.post',data=post.id,slug=post.slug, page=page_num) }}"
+                              class="btn btn-outline-dark btn-sm">
+                              {{ page_num }}
+                        </a>
+                        {% endif %}
+                        {% else %}
+                        ...
+                        {% endif %}
+                        {% endfor %}
+                  </span>
+
+                  <!-- This check if to show the original post -->
+                  {% if comments.page > 1 %}
+                  {% else %}
+                  <div class="post" style="margin-top: 0rem;">
+                        <div class="posttag">
+                              <b><a
+                                          href="{{url_for('views.post',data=post.id,slug=post.slug, page= comments.page)}}">{{post.topic}}</a></b>
+                              by <a href="/{{post.user.username}}">
+                                    <b>
+                                          <span class='badge bg-secondary rounded-pill'
+                                                style=" box-shadow: -3px 3px 3px rgb(153, 156, 153);">OP</span>
+                                          <font color="rgb(139, 178, 32)">{{post.user.username}}</font></a>
+                              </b>: {% if post.date_to_publish.strftime("%d%m%Y") !=
+                              date.now().strftime("%d%m%Y") %}
+                              {{post.date_to_publish.strftime("%I:%M %p on %b %d,%Y")}}
+                              {% else %}
+                              {{post.date_to_publish.strftime("on %I:%M %p")}}
+                              {% endif %}
+
+
+                        </div>
+                        <div class="text">{{ bbcode(post.body | safe)|replace('</blockquote><br />','</blockquote>')
+                              |replace('<br /><br />','<br />') | safe}}</div>
+                        {% if current_user.is_anonymous %}
+                        <small style="padding-left: 1rem; font-size: 0.8rem;">
+                              {% if post.total_likes() == 0 %}
+                              {% elif post.total_likes() == 1 %}
+                              1 like
+                              {% else %}
+                              {{post.total_likes()}} Likes
+                              {% endif %}
+
+                              (<a
+                                    href="{{url_for('views.createcomment',id=post.id)}}?quote={{post.id}}&post=p&page={{comments.page}}">Quote</a>)
+                        </small>
+                        {% else %}
+                        <small style="padding-left: 1rem; font-size: 0.8rem;">
+                              (<a
+                                    href="{{url_for('views.createcomment',id=post.id)}}?quote={{post.id}}&post=p&page={{comments.page}}">Quote</a>)
+                              <span id="likes-count-p-{{post.id}}">
+                                    {% if post.total_likes() == 0 %}
+                                    {% elif post.total_likes() == 1 %}
+                                    <span id="likes-totalcount-p-{{post.id}}">1</span> Like
+                                    {% else %}
+                                    <span id="likes-totalcount-p-{{post.id}}">{{post.total_likes()}}</span> Likes
+                                    {% endif %}
+                              </span>
+                              (<a href="#" id="like-p-{{post.id}}" onclick="like({{post.id}},'p')">
+                                    {% if post.i_have_liked() %}
+                                    Unlike
+                                    {% else %}
+                                    Like
+                                    {% endif %}
+                              </a>)
+
+
+
+
+                              (<a id="share-p-{{post.id}}" href="#" onclick="share({{post.id}},'p')">
+                                    {% if post.id in
+                                    current_user.has_shared_post(post.id)
+                                    %}
+                                    Unshare
+                                    {% else %}
+                                    Share
+                                    {% endif %}
+                              </a>)
+
+
+
+
+
+                              (<a href="{{url_for('views.save',id=post.id,type='p',page=comments.page)}}">
+                                    {% if post.id in post.saved_post|map(attribute='postid')|list and
+                                    (current_user.id
+                                    in post.saved_post|map(attribute='user')|list) %}
+                                    Unsave
+                                    {% else %}
+                                    Save
+                                    {% endif %}
+                              </a>)
+                              {% if post.user.username == current_user.username %}
+                              (<a href="{{url_for('views.edit',id=post.id)}}">Edit</a>)
+                              {% else %}
+                              (<a href="">Report</a>)
+                              {% endif %}
+                        </small>
+                        {% if post.user.signature %}
+                        <hr>
+                        <div class="signature">{{post.user.signature}} Boombers</div>
+                        {% endif %}
+                  </div>
+                  {% endif %}
+            </div>
+            {% endif %}
+      </article>
+
+
+
+
+
+
+
+
+
+
+
+      <span id="commentlister"><span id="clshow" class="btn btn-success mt-3">Comments</span></span>
+
+
+
+
+      <!-- This is where the codes about the comments started... -->
+      {% for comment in comments.items %}
+      <a id="{{comment.id}}"></a>
+      <div class="post">
+            <div class="posttag">
+                  <b><a href="{{url_for('views.post',data=post.id,slug=post.slug, page= comments.page )}}#{{comment.id}}">RE:
+                              {{post.topic}} </a></b>
+                  by
+                  {% if comment.user.id %}
+                  {% if comment.user.username == post.user.username %}
+                  <span class='badge bg-secondary rounded-pill'>OP</span> <a
+                        href="{{url_for('views.menu',data=comment.user.username)}}">
+                        <b>
+                              <font color="rgb(139, 178, 32)">{{comment.user.username}}</font></a>
+                  </b>
+                  </a> : {% if comment.date_to_publish.strftime("%d%m%Y") != date.now().strftime("%d%m%Y") %}
+                  {{comment.date_to_publish.strftime("%I:%M %p on %b %d,%Y")}}
+                  {% else %}
+                  {{comment.date_to_publish.strftime("on %I:%M %p")}}
+                  {% endif %}
+                  {% else %}
+                  <a href="{{url_for('views.menu',data=comment.user.username)}}">
+                        <b>
+                              <font color="brown">{{comment.user.username}}</font></a>
+                  </b>
+                  </a> :{% if comment.date_to_publish.strftime("%d%m%Y") != date.now().strftime("%d%m%Y") %}
+                  {{comment.date_to_publish.strftime("%I:%M %p on %b %d,%Y")}}
+                  {% else %}
+                  {{comment.date_to_publish.strftime("on %I:%M %p")}}
+                  {% endif %}
+                  {% endif %}
+                  {% else %}
+                  {{comment.anon}} : {% if comment.date_to_publish.strftime("%d%m%Y") != date.now().strftime("%d%m%Y")
+                  %}
+                  {{comment.date_to_publish.strftime("%I:%M %p on %b %d,%Y")}}
+                  {% else %}
+                  {{comment.date_to_publish.strftime("on %I:%M %p")}}
+                  {% endif %}
+                  {% endif %}
+
+            </div>
+            <div class="text">{{ bbcode(comment.text | safe) |replace('</blockquote><br />','</blockquote>')
+                  |replace('<br /><br />','<br />') | safe}}</div>
+            <!-- If it is anonymous user allow only 'quote' else allow all post edit links -->
+            {% if
+            current_user.is_anonymous %}<small style="padding-left: 1rem; font-size: 0.8rem;">
+                  {% if comment.total_likes() == 0 %}
+                  {% elif comment.total_likes() == 1 %}
+                  1 Like
+                  {% else %}
+                  {{comment.total_likes()}} Likes
+                  {% endif %}
+                  (<a
+                        href="{{url_for('views.createcomment',id=post.id)}}?quote={{comment.id}}&post=c&page={{comments.page}}">Quote</a>)
+            </small>
+            {% else %}
+            <small style="padding-left: 1rem; font-size: 0.8rem;">
+                  (<a
+                        href="{{url_for('views.createcomment',id=post.id)}}?quote={{comment.id}}&post=c&page={{comments.page}}">Quote</a>)
+                 <span id="likes-count-c-{{comment.id}}">
+                        {% if comment.total_likes() == 0 %}
+                        {% elif comment.total_likes() == 1 %}
+                        <span id="likes-totalcount-c-{{comment.id}}">1</span> Like
+                        {% else %}
+                        <span id="likes-totalcount-c-{{comment.id}}">{{comment.total_likes()}}</span> Likes
+                        {% endif %}
+                  </span>
+                  (<a id="like-c-{{comment.id}}" onclick="like({{post.id}} ,'c', {{comment.id}})" class="justapi">
+                        {% if comment.i_have_liked() %}
+                        Unlike
+                        {% else %}
+                        Like
+                        {% endif %}
+                  </a>)
+
+                  (<a id="share-c-{{comment.id}}" onclick="share({{post.id}} ,'c', {{comment.id}})" class="justapi">
+                        {% if comment.id in
+                        current_user.has_shared_post(post.id,comment.id) %}
+                        Unshare
+                        {% else %}
+                        Share
+                        {% endif %}
+                  </a>)
+                  (<a href="{{url_for('views.save',id=post.id,type='c',page=comments.page)}}?comment={{comment.id}}">
+                        {% if comment.id in comment.save|map(attribute='commentid')|list and (current_user.id in
+                        comment.save|map(attribute='user')|list) %}
+                        Unsave
+                        {% else %}
+                        Save
+                        {% endif %}
+                  </a>)
+
+
+
+
+
+
+
+                  {% if comment.user.username == current_user.username %}
+                  (<a href="{{url_for('views.editcomment',id=comment.id)}}">Edit</a>)
+                  {% else %}
+                  (<a href="">Report</a>)
+                  {% endif %}
+            </small>
+            {% if post.user.signature %}
+            <hr>
+            <div class="signature">{{comment.user.signature}} Boombers</div>
+            {% endif %}
+            {% endif %}
+      </div>
+      {% endfor %}
+
+
+
+      <!-- Loop through the number of pages to display a link for each-->
+      <br>
+      {% for page_num in comments.iter_pages(left_edge=7, right_edge=4, left_current=2, right_current=2) %}
+      {% if page_num %}
+      <!-- Check for the active page and set the link to "Active"-->
+      {% if comments.page == page_num %}
+      <a href="{{ url_for('views.post',data=post.id,slug=post.slug,page=page_num) }}" class="btn btn-dark btn-sm">
+            {{ page_num }}
+      </a>
+      {% else %}
+      <a href="{{ url_for('views.post',data=post.id,slug=post.slug, page=page_num) }}"
+            class="btn btn-outline-dark btn-sm">
+            {{ page_num }}
+      </a>
+      {% endif %}
+      {% else %}
+      ...
+      {% endif %}
+      {% endfor %}
+      <center>(<a href="{{url_for('views.createcomment',id=post.id)}}">Reply</a>)
+            {% if current_user.is_anonymous %}
+            {% else %}
+            (<a href="{{url_for('auth.followpost',postid=post.id)}}"> {% if post.id in
+                  current_user.followed_posts()|map(attribute='id')|list %}
+                  Unfollow
+                  {% else %}Follow
+                  {% endif %}</a>)
+            {% endif %}(<a href="#top">Go up</a>)</center>
+
+
+      <a id="bottom"></a>
+</section>
+<br />
+<form action="/move-trending/{{data}}" method="POST" align="center">
+
+      <label for="topic"><b>Move to trending</b></label>
+      <input type="datetime-local" name="date" id="date" value="{{date}}" required>
+      <button type="submit" class="submitpost">Move</button>
+</form>
+
+<script type="text/javaScript" src="{{url_for('static',filename='posts.js')}}"></script>

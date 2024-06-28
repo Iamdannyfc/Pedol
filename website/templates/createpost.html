@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<br/>
+<form method="POST">
+    
+      <label for="topic"><b>Topic</b></label>
+      <input class="form-control" type="text" name="topic" id="topic" >
+      <br/>
+  
+      <label for="body"><b>Text</b></label>
+      <textarea class="form-control" rows="5" name="body" id="body" > </textarea>
+      <button type="submit" class="btn btn-primary">Post</button>
+</form>
+  {% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+
+
+{% block title %} Login{% endblock %} 
+
+
+{% block content %} 
+<form style="margin-top: 5rem; margin-bottom: 10rem;" method="POST">
+  <label for="email"><b>Username</b></label>
+    <div class="input-group">
+      <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+      <input id="username" type="text" class="form-control" name="username" placeholder="Username" required>
+    </div>
+    <label for="email"><b>Password</b></label>
+    <div class="input-group">
+      <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+      <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+    </div>
+    <br/>
+      <input id="submit" type="submit" class="btn btn-primary" name="submit" value="Submit">
+    
+      
+  </form>
+{% endblock %}

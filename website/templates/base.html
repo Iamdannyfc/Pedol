@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} {{title}} {% endblock %}</title>
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}" />
+    {% block ckeditor %} {% endblock ckeditor %}
+  </head>
+
+  <body>
+    {% include 'p/header.html' %}
+    <div style="margin-top: 2.5rem">
+      {% if current_user.is_anonymous %} {% else%}
+      <b>
+        <div class="profilenav">
+          <a href="{{ url_for('views.mention') }}"
+            >Mention{% if
+            current_user.new_mentions()|map(attribute='date_to_publish')|list|count==0
+            %} {% else
+            %}({{current_user.new_mentions()|map(attribute='date_to_publish')|list|count}})
+            {% endif %}</a
+          >
+          /
+          <a href="{{ url_for('views.following') }}">
+            Following{% if
+            current_user.new_followed_comment()|map(attribute='date_to_publish')|list|count==0
+            %} {% else
+            %}({{current_user.new_followed_comment()|map(attribute='date_to_publish')|list|count}})
+            {% endif %}
+          </a>
+
+          /
+          <a href="{{ url_for('views.followed') }}">
+            {% if
+            (current_user.new_ft()|map(attribute='date_to_publish')|list|count +
+            current_user.new_ft_comment()|map(attribute='date_to_publish')|list|count)==0
+            %} FT {% else %} Followed
+            Topics({{current_user.new_ft()|map(attribute='date_to_publish')|list|count
+            +
+            current_user.new_ft_comment()|map(attribute='date_to_publish')|list|count}})</a
+          >
+          {% endif %} /
+          <a href="{{ url_for('views.shared') }}">
+            Shared{% if
+            current_user.new_shared()|map(attribute='date_to_publish')|list|count==0
+            %} {% else
+            %}({{current_user.new_shared()|map(attribute='date_to_publish')|list|count}})
+            {% endif %}
+          </a>
+          / <a href="{{ url_for('views.saved') }}">Saved</a>
+        </div>
+      </b>
+
+      {% endif %}
+      <br />
+
+      {% with messages = get_flashed_messages() %} {% if messages %} {% for
+      message in messages %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        {{message}}
+      </div>
+      {% endfor %} {% endif %} {% endwith %} {% block container %}
+      <div class="container">{% block content %} {% endblock content %}</div>
+
+      {% endblock container %}
+    </div>
+
+    {% include 'p/footer.html' %}
+
+    <!-- JavaScript Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      type="text/javaScript"
+      src="{{url_for('static',filename='index.js')}}"
+    ></script>
+  </body>
+</html>

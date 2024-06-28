@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+
+
+{% block title %} {{title}} {% endblock %}
+
+
+
+
+
+{% block content %}
+    {% include 'p/forumnav.html' %}
+
+    <h1 align='center'>Saved Post's by you</h1>
+
+
+    {% for post in posts %}
+    <div class="post"><div class="posttag">
+        <b><a href="{{url_for('views.post',data=post.postid,slug=post.post.slug)}}">{{post.post.topic}}</a></b> by {% if post.comment.text %}{% if not post.comment.user.username %}{{post.comment.anon}}{% else %}<b><a href="/{{post.comment.user.username}}"><font color='brown'>{{post.comment.user.username}}</font></a></b>{% endif %}{% else %}<b><a href="/{{post.post.user.username}}"><font color='brown'>{{post.post.user.username}}</font></a></b>{% endif %} 
+        on {{post.date_to_publish.strftime("%I:%M %p on %b %d,%Y")}}
+    </div>
+        <div class="text">{% if post.comment.text %}{{ bbcode(post.comment.text) | safe }}{% else %}{{ bbcode(post.post.body) | safe }}{% endif %}<br></div>
+    </div>
+
+    {% endfor %}
+    <br>
+
+
+
+{% endblock %}
+

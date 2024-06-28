@@ -1,0 +1,401 @@
+body a:link {
+  text-decoration: none;
+}
+
+/* Desktop view */
+@media screen and (min-width: 768px) {
+  .profilenav {
+    padding-top: 0.5rem !important ;
+  }
+}
+
+/* Mobile device view */
+@media screen and (max-width: 767px) {
+  /* tbody {
+    font-size: small !important;
+    line-height: 0.7rem !important;
+    padding: 0.2rem !important;
+  }
+
+  body {
+    line-height: 1rem;
+  }
+  .footernav {
+    font-size: 0.85rem !important;
+  } */
+}
+
+/* Very small device */
+@media screen and (max-width: 320px) {
+  table td {
+    width: 3rem;
+    height: 1.3rem;
+    overflow: auto;
+    display: inline-block;
+    white-space: nowrap;
+    padding: 0.5rem 0.2 !important;
+  }
+  .trending {
+    padding-left: 1rem !important;
+    padding-right: 0.2rem;
+  }
+}
+
+/* General css code goes here */
+#commentlister {
+  visibility: hidden;
+  position: sticky;
+  transition: top left 10s;
+}
+#clshow {
+  display: none;
+  transition: top left 10s;
+}
+a .rounded-pill:active {
+  text-decoration: none;
+  color: rgb(220, 241, 220);
+}
+
+.calm {
+  background-color: rgb(76, 233, 76);
+  box-shadow: 5px 10px 10px rgb(4, 138, 15);
+  margin: 0rem 0rem;
+  text-shadow: 1px 5px 8px rgb(7, 5, 117);
+  padding: 0rem 2rem;
+  border-radius: 0px 0px 30px 30px;
+  color: white;
+  font-size: 0.8em;
+}
+
+.calm a:link {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}
+.calm a:visited {
+  color: rgb(255, 255, 255);
+}
+a .nav-link .user {
+  color: white;
+}
+
+.profilenav {
+  background-color: rgb(220, 241, 220);
+  box-shadow: 5px 10px 30px rgb(101, 235, 112);
+  text-shadow: 1px 5px 8px rgb(255, 255, 255);
+  text-align: center;
+  border-radius: 0px 0px 30px 30px;
+  color: rgb(0, 0, 0);
+  font-size: 0.95rem;
+  /* padding-bottom: 0.5rem;
+  padding-top: 0.2rem; */
+  /* font-size: medium; */
+  padding: 0.2rem 0.5rem 0.1rem;
+}
+
+.profilenav a:link {
+  text-decoration: none;
+  color: blue;
+}
+.profilenav a:visited {
+  color: rgb(11, 11, 36);
+}
+
+.footernav {
+  background-color: rgb(220, 241, 220);
+  box-shadow: 5px 10px 30px rgb(4, 138, 15);
+  text-shadow: 1px 5px 8px rgb(255, 255, 255);
+  text-align: center;
+  border-radius: 30px 30px 0px 0px;
+  color: rgb(0, 0, 0);
+  font-size: 1em;
+  /* padding-bottom: 0.1rem; */
+  padding: 0px 0.2rem 0.1rem 0.2rem;
+  margin: 0px 0.2rem 0px 0.2rem;
+  font-size: medium;
+}
+.footernav a:link {
+  text-decoration: none;
+  color: blue;
+}
+.footernav a:visited {
+  color: rgb(11, 11, 36);
+}
+
+.trendingnav {
+  background-color: rgb(220, 241, 220);
+  box-shadow: 5px 10px 30px rgb(4, 138, 15);
+  text-shadow: 1px 5px 8px rgb(255, 255, 255);
+  border-radius: 30px 30px 30px 30px;
+  color: rgb(0, 0, 0);
+  padding-bottom: 0.1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+.trendingnav a:link {
+  text-decoration: none;
+  color: blue;
+  font-size: 0.9rem;
+}
+.trendingnav a:visited {
+  color: rgb(9, 9, 102);
+}
+
+.trending {
+  background-color: white;
+  margin-top: 2rem;
+  border-style: solid;
+  border-width: thin;
+  border-color: rgb(6, 66, 32);
+  box-shadow: 5px 10px 30px rgb(73, 207, 84);
+  border-radius: 30px 30px 30px 30px;
+  padding-left: 1rem;
+}
+
+.post {
+  background-color: white;
+  margin-top: 1rem;
+  border-style: solid;
+  border-width: thin;
+  border-color: rgb(6, 66, 32);
+  /* box-shadow: 5px 10px 30px rgb(73, 207, 84); */
+  border-radius: 30px 30px 20px 20px;
+  font-size: 20px;
+  box-shadow: 3px 4px 10px rgb(4, 138, 15);
+}
+
+.post .posttag {
+  background-color: rgb(147, 247, 147);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-radius: 31px 31px 0px 0px;
+  font-size: 0.9rem;
+}
+
+.post .text {
+  padding-left: 0.5rem;
+  padding-right: 0.1rem;
+  padding-top: 0rem;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  white-space: pre-wrap;
+  padding-bottom: 0rem;
+  font-size: 12pt;
+  /* word-wrap: break-word; */
+  word-break: break-all;
+}
+
+.text a:link {
+  text-decoration: none;
+}
+
+.post .signature {
+  margin-top: 0%;
+  padding-top: 0%;
+  padding-left: 1rem;
+  font-size: small;
+}
+
+hr {
+  margin-top: 0%;
+  margin-bottom: 0%;
+}
+
+small a:link {
+  text-decoration: none;
+}
+
+td {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.trendingtopic {
+  background-color: rgb(220, 241, 220);
+  box-shadow: 3px 3px 3px rgb(4, 138, 15);
+  text-shadow: 1px 5px 8px rgb(255, 255, 255);
+  border-radius: 30px 30px 30px 30px;
+  color: rgb(0, 0, 0);
+  font-size: 2em;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-right: 1.5rem;
+  margin-bottom: 0.2rem;
+  font-size: medium;
+  font-weight: bold;
+}
+.trendingtopic a:link {
+  text-decoration: none;
+  color: blue;
+}
+.trendingtopic a:visited {
+  color: rgb(9, 9, 102);
+}
+
+blockquote {
+  margin: 1px;
+  background-color: #b9ff99;
+  border: 1px #c6ccbe solid;
+  padding: 4px 6px;
+  border-radius: 10px;
+  margin-right: 1rem;
+  margin-left: 0.5rem;
+  font-weight: italic;
+  font-size: 1rem;
+}
+
+.navbar {
+  padding-top: 0rem;
+  padding-bottom: 0rem;
+  line-height: 0.2rem;
+}
+
+.d-flex {
+  margin-bottom: 0.5rem;
+  margin-top: 0.1rem;
+}
+.form-control .me-2 {
+  padding-top: 1rem;
+}
+
+.btn-sm {
+  height: 1.5rem;
+  width: 2rem;
+  font-size: 0.6rem;
+}
+h5 {
+  font-size: 1rem;
+}
+
+a.badge.bg-danger.rounded-pill a:hover {
+  color: white;
+}
+
+/* ------------------------------------------- */
+.post .text p {
+  margin-top: 0rem;
+  padding-top: 0rem;
+  margin-bottom: 0rem;
+  padding-bottom: 0rem;
+}
+.post .text br {
+  margin-top: 0rem;
+  padding-top: 0rem;
+  margin-bottom: 0rem;
+  padding-bottom: 0rem;
+}
+
+.post small {
+  margin-top: 0rem;
+  padding-top: 0rem;
+  margin-bottom: 0rem;
+  padding-bottom: 0rem;
+}
+
+.justapi {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+@keyframes fadeOutComment {
+  0% {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  30% {
+    opacity: 0;
+    visibility: visible;
+    top: 10px;
+    font-size: small;
+  }
+  40% {
+    opacity: 0.8;
+    visibility: visible;
+    top: 50px;
+    font-size: xx-small;
+  }
+  60% {
+    opacity: 0.1;
+    visibility: visible;
+    top: 10px;
+    width: 50%;
+  }
+  62% {
+    opacity: 0.5;
+    top: 30rem;
+
+    left: 5px;
+    width: 30%;
+  }
+  85% {
+    top: -20px;
+    position: absolute;
+    opacity: 0.1;
+    width: 0%;
+  }
+  90% {
+    top: -50px;
+    position: absolute;
+    width: 0%;
+    opacity: 0.5;
+  }
+  95% {
+    top: -70px;
+    /* position: absolute; */
+    /* width: 0%; */
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    /* width: 0%; */
+    /* position: absolute; */
+    top: -100px;
+  }
+}
+
+@keyframes changeContent {
+  0% {
+    content: "Comment";
+  }
+
+  30% {
+    content: "Click reply to make a comment";
+  }
+
+  100% {
+    content: "Click reply to make a comment";
+  }
+  /* 62% {
+    opacity: 0.5;
+    top: 30rem;
+
+    left: 5px;
+    width: 30%;
+  }
+  85% {
+    top: -20px;
+    position: absolute;
+    opacity: 0.1;
+    width: 0%;
+  }
+  90% {
+    top: -50px;
+    position: absolute;
+    width: 0%;
+    opacity: 0.5;
+  }
+  95% {
+    top: -70px;
+
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    top: -100px;
+  } */
+}

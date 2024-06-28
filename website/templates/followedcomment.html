@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+
+
+{% block title %} {{title}} {% endblock %}
+
+
+
+
+
+{% block content %}
+<center>
+    <b align="center">Latest Post By People You Are Following</b>
+</center>
+<div>
+
+    <!-- Loop through the number of pages to display a link for each-->
+
+    {% for page_num in followings.iter_pages(left_edge=7, right_edge=4, left_current=2, right_current=2) %}
+    {% if page_num %}
+    <!-- Check for the active page and set the link to "Active"-->
+    {% if followings.page == page_num %}
+    <a href="{{ url_for('views.following', page_v=page_num) }}" class="btn btn-dark btn-sm">
+        {{ page_num }}
+    </a>
+    {% else %}
+    <a href="{{ url_for('views.following', page_v=page_num) }}" class="btn btn-outline-dark btn-sm">
+        {{ page_num }}
+    </a>
+    {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+    {% endfor %}
+</div>
+
+<!-- All this user posts is shown here -->
+
+{% for comment in followings.items %}
+<div class="post">
+    <div class="posttag">
+        <b><a href="{{url_for('views.postint',data=comment.post)}}">{{get_post(comment.post).topic}}</a> </b>
+        by
+        {% if not comment.user.username %}{{comment.anon}}
+        {% else %}<b>
+            <font color='brown'>{{comment.user.username}}</font>
+        </b>
+        {% endif %}
+        on {{comment.date_to_publish.strftime("%I:%M %p on %b %d,%Y")}}
+    </div>
+    <div class="text">{{ bbcode(comment.text | safe)|replace('</blockquote><br />','</blockquote>')
+        |replace('<br /><br />','<br />') | safe}}</div>
+</div>
+{% endfor %}
+<!-- Loop through the number of pages to display a link for each-->
+<br>
+{% for page_num in followings.iter_pages(left_edge=7, right_edge=4, left_current=2, right_current=2) %}
+{% if page_num %}
+<!-- Check for the active page and set the link to "Active"-->
+{% if followings.page == page_num %}
+<a href="{{ url_for('views.following', page_v=page_num) }}" class="btn btn-dark btn-sm">
+    {{ page_num }}
+</a>
+{% else %}
+<a href="{{ url_for('views.following', page_v=page_num) }}" class="btn btn-outline-dark btn-sm">
+    {{ page_num }}
+</a>
+{% endif %}
+{% else %}
+...
+{% endif %}
+{% endfor %}
+
+{% endblock %}

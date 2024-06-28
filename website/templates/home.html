@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %} Home {% endblock %} {% block
+container %} {% include 'p/forumnav.html' %}
+<div class="trending">
+  <center>
+    <b>
+      <span class="tablewrapper">
+        <table class="trendingtopic">
+          <tr>
+            <td><a href="{{url_for('views.all')}}">All</a></td>
+            <td><a href=""> Twitter</a></td>
+            <td><a href=""> Facebook</a></td>
+            <td><a href=""> How To Advertise</a></td>
+          </tr>
+        </table>
+      </span>
+    </b>
+  </center>
+
+  <hr />
+  {% for trending in posts %}
+  <h5>
+    -
+    <a href="/{{ trending.postid }}/{{ trending.slug }}">{{ trending.name }}</a>
+  </h5>
+  {% endfor %}
+</div>
+
+{% endblock container %}

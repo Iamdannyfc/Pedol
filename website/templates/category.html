@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+
+
+{% block title %} {{title}} {% endblock %}
+
+
+
+
+
+{% block container %}
+{% include 'p/forumnav.html' %}
+<center>
+    <b>{{SITENAME}} / {{title}}</b>
+</center>
+<div>
+    <!-- Loop through the number of pages to display a link for each-->
+    {% for page_num in posts.iter_pages(left_edge=7, right_edge=4, left_current=2, right_current=2) %}
+    {% if page_num %}
+    <!-- Check for the active page and set the link to "Active"-->
+    {% if posts.page == page_num %}
+    <a href="{{ url_for('views.mention', page_v=page_num) }}" class="btn btn-dark btn-sm">
+        {{ page_num }}
+    </a>
+    {% else %}
+    <a href="{{ url_for('views.mention', page_v=page_num) }}" class="btn btn-outline-dark btn-sm">
+        {{ page_num }}
+    </a>
+    {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+    {% endfor %}
+</div>
+<br>
+
+<!-- All this user posts is shown here -->
+<div class="trending" style="margin-top: 0rem;">
+    {% for post in posts.items %}
+    <div class="card-body" style="padding: 0.2rem 1rem;">
+        <h5 style="margin-bottom: 0rem;"><a href="/{{post.id}}/{{post.slug}}"> {{post.topic}}</a></h5>
+        <small>
+            {{post.postcategory.name}} by {{post.user.username}} on
+            {{post.date_to_publish.strftime("%I:%M %p , %b %d,%Y")}}
+        </small>
+    </div>
+    <hr>
+
+    {% endfor %}
+</div>
+<center>
+    ( <a href="{{url_for('views.createpost', id=id)}}">Create a post</a> )
+</center>
+
+<!-- Loop through the number of pages to display a link for each-->
+{% for page_num in posts.iter_pages(left_edge=7, right_edge=4, left_current=2, right_current=2) %}
+{% if page_num %}
+<!-- Check for the active page and set the link to "Active"-->
+{% if posts.page == page_num %}
+<a href="{{ url_for('views.mention', page_v=page_num) }}" class="btn btn-dark btn-sm">
+    {{ page_num }}
+</a>
+{% else %}
+<a href="{{ url_for('views.mention', page_v=page_num) }}" class="btn btn-outline-dark btn-sm">
+    {{ page_num }}
+</a>
+{% endif %}
+{% else %}
+...
+{% endif %}
+{% endfor %}
+
+{% endblock container %}

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+<!-- {% block ckeditor %} {{ ckeditor.load() }} {% endblock %} -->
+{% block title %}Comment{% endblock %}
+{% block content %}
+<br />
+<form method="POST">
+      <!-- If the quoter is an anonymous -->
+      {% if current_user.is_anonymous %}
+      <label for="user"><b>Name:</b></label>
+      <input class="form-control" type="text" value="{{username}}" name="user" id="user" placeholder="Anonymous">
+      <br />
+      {% endif %}
+      <label for="body"><b>Comment :</b></label>
+      {% if quote %}
+      <textarea class="form-control" rows="5" name="body"
+            id="body">{% if comment_exists.user.username %}<blockquote id="q-{{type}}-{{quote}}"> <a href="{% if type=='c'%}{{url_for('views.post',data=comment_exists.comment.id,slug=comment_exists.comment.slug,page=page)}}#{{quote}}{% else %}{{url_for('views.postint',data=comment_exists.id)}}{% endif %}"> {{comment_exists.user.username}} </a>:<br>{{comment}}</blockquote><p></p>{% else %}<blockquote> {{comment_exists.anon}} :<br> {{comment}}</blockquote>{% endif %}</textarea>
+      {% else %}
+      <textarea class="form-control" rows="5" name="body" id="body">{{body}}</textarea>
+      {% endif %}
+
+      <button type="submit" class="btn btn-primary">Comment</button>
+</form>
+
+{{ ckeditor.load() }}
+{{ ckeditor.config(name='body',custom_config="enterMode:2,
+autoParagraph:false,
+on : {
+instanceReady : function( ev )
+{
+
+this.dataProcessor.writer.setRules( 'p',
+{
+indent : false,
+breakBeforeOpen : false,
+breakAfterOpen : false,
+breakBeforeClose : false,
+breakAfterClose : false
+});
+
+
+this.dataProcessor.writer.setRules( 'blockquote',
+{
+indent : false,
+breakBeforeOpen : false,
+breakAfterOpen : false,
+breakBeforeClose : false,
+breakAfterClose : false
+})
+}
+
+}
+") }}
+
+
+
+{% endblock %}
+
+<!-- on : {
+instanceReady : function( ev )
+{
+
+this.dataProcessor.writer.setRules( 'p',
+{
+indent : false,
+breakBeforeOpen : true,
+breakAfterOpen : false,
+breakBeforeClose : false,
+breakAfterClose : true
+});
+}
+}" -->
+
+<!-- disallowedContent: 'p' -->

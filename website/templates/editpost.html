@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<br/>
+<form method="POST">
+    
+      <label for="topic"><b>Topic</b></label>
+      <input class="form-control" type="text" name="topic" id="topic" value="{{ post.topic }}" >
+      <br/>
+  
+      <label for="body"><b>Text</b></label>
+      <textarea rows="5" class="form-control" name="body" id="body" >{{ post.body }}</textarea>
+      <button type="submit" class="btn btn-primary">Edit Post</button>
+</form>
+  {% endblock %}

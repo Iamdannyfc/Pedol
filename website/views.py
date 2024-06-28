@@ -1,3 +1,4 @@
+from unicodedata import category
 from slugify import slugify
 import string
 import bbcode
@@ -37,8 +38,29 @@ ROWS_PER_PAGE = ROWS_PER_PAGE
 bbcode = bbcode.render_html
 
 
+def create_category():
+    mod = 0
+    categories = [
+        "news",
+        "general",
+        "digital",
+        "science",
+        "business",
+        "humanities",
+        "entertainment",
+        "sport",
+        "agriculture",
+    ]
+    for category in categories:
+        db.session.add(Postcategory(name=category, mod=mod))
+        db.session.commit()
+
+
 @views.route("/")
 def home():
+    category = Postcategory.query.all()
+    if not category:
+        create_category()
     posts = (
         Trending.query.filter(Trending.date_to_publish <= datetime.datetime.now())
         .order_by(Trending.date_to_publish.desc())

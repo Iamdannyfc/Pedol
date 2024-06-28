@@ -5,6 +5,7 @@ from os import path
 from flask_login import LoginManager
 from flask_ckeditor import CKEditor
 import datetime
+from werkzeug.security import generate_password_hash
 
 db = SQLAlchemy()
 ckeditor = CKEditor()
